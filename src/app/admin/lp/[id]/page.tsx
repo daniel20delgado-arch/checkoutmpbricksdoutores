@@ -44,8 +44,12 @@ export default function AdminLpDetailPage() {
   const [error, setError] = useState<string | null>(null);
 
   const [creatingVariant, setCreatingVariant] = useState(false);
-  const [showVariantBModal, setShowVariantBModal] = useState(false);
-  const [variantBCreated, setVariantBCreated] = useState<PageVariant | null>(null);
+  const [showVariantModal, setShowVariantModal] = useState(false);
+  const [variantCreated, setVariantCreated] = useState<PageVariant | null>(null);
+  const [newVariantSlug, setNewVariantSlug] = useState("");
+  const [newVariantLabel, setNewVariantLabel] = useState("");
+
+  const [updatingProductionId, setUpdatingProductionId] = useState<string | null>(null);
 
   const [startingTest, setStartingTest] = useState(false);
   const [selectedVariantBId, setSelectedVariantBId] = useState<string>("");
@@ -143,8 +147,26 @@ export default function AdminLpDetailPage() {
     void load();
   }, [id]);
 
-  async function handleCreateVariantB() {
+  async function handleCreateVariant() {
     if (!lp) return;
+
+    const slug = newVariantSlug.trim();
+    const label =
+      newVariantLabel.trim() || (slug ? `Variante ${slug.toUpperCase()}` : "");
+
+    if (!slug) {
+      setError("Informe o slug da variante (ex.: b, c, oferta-nova).");
+      return;
+    }
+    if (slug === "default") {
+      setError("O slug \"default\" é reservado para a variante padrão.");
+      return;
+    }
+    if (variants.some((v) => v.variant_slug === slug)) {
+      setError("Já existe uma variante com esse slug para esta LP.");
+      return;
+    }
+
     setCreatingVariant(true);
     setError(null);
     try {
@@ -152,32 +174,34 @@ export default function AdminLpDetailPage() {
         .from("page_variants")
         .insert({
           landing_page_id: lp.id,
-          variant_slug: "b",
-          label: "Variante B"
+          variant_slug: slug,
+          label: label || slug
         })
         .select("id, variant_slug, label, created_at")
         .single();
 
       if (insertError || !newVariant) {
-        setError(insertError?.message ?? "Erro ao criar variante B.");
+        setError(insertError?.message ?? "Erro ao criar variante.");
         setCreatingVariant(false);
         return;
       }
-      setVariantBCreated(newVariant as PageVariant);
-      setShowVariantBModal(true);
+      setVariantCreated(newVariant as PageVariant);
+      setShowVariantModal(true);
+      setNewVariantSlug("");
+      setNewVariantLabel("");
       await load();
     } finally {
       setCreatingVariant(false);
     }
   }
 
-  function getBaseHtmlForVariantB(variantId: string): string {
+  function getBaseHtmlForVariant(variant: PageVariant): string {
     if (!lp) return "";
     return `<!DOCTYPE html>
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <title>${lp.name} - B</title>
+    <title>${lp.name} - ${variant.label}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
       * { box-sizing: border-box; }
@@ -191,14 +215,14 @@ export default function AdminLpDetailPage() {
     <script>
       async function trackClick(buttonId) {
         try {
-          await fetch("/api/track-click", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ landing_page_id: "${lp.id}", page_variant_id: "${variantId}", experiment_id: null, button_id: buttonId }), keepalive: true });
+          await fetch("/api/track-click", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ landing_page_id: "${lp.id}", page_variant_id: "${variant.id}", experiment_id: null, button_id: buttonId }), keepalive: true });
         } catch (e) {}
       }
     </script>
   </head>
   <body>
     <div class="wrapper">
-      <h1>Variante B - ${lp.name}</h1>
+      <h1>${variant.label} - ${lp.name}</h1>
       <p>Altere o conteúdo desta variante para o teste A/B.</p>
       <button type="button" class="cta" data-track="cta-principal" onclick="trackClick('cta-principal')">CTA principal</button>
     </div>
@@ -207,22 +231,41 @@ export default function AdminLpDetailPage() {
 `;
   }
 
-  function getCursorPromptForVariantB(variantId: string): string {
+  function getCursorPromptForVariant(variant: PageVariant): string {
     if (!lp) return "";
-    const pasta = `landingpages/${lp.slug}/b`;
+    const pasta = `landingpages/${lp.slug}/${variant.variant_slug}`;
     const filePath = `${pasta}/index.html`;
-    return `Crie o arquivo da variante B para o teste A/B no caminho exato:
+    return `Crie o arquivo da variante para o teste A/B no caminho exato:
 
 **Arquivo obrigatório:** \`${filePath}\`
 
-**Contexto:** LP "${lp.name}", slug \`${lp.slug}\`. Esta é a variante B. Use os IDs abaixo no script de tracking.
+**Contexto:** LP "${lp.name}", slug \`${lp.slug}\`. Esta é uma variante de teste para o A/B. Use os IDs abaixo no script de tracking.
 
 **IDs para o fetch('/api/track-click'):**
 - landing_page_id: "${lp.id}"
-- page_variant_id: "${variantId}"
+- page_variant_id: "${variant.id}"
 
 Crie a pasta \`${pasta}\` e o \`index.html\` com HTML estático, cores #050a30 e #f4b609, e a função trackClick(buttonId) chamando a API com os IDs acima. Botões com data-track e onclick="trackClick('id')".
 Salve em \`${filePath}\`.`;
+  }
+
+  async function handleSetProductionVariant(variantId: string) {
+    if (!lp) return;
+    setUpdatingProductionId(variantId);
+    setError(null);
+    try {
+      const { error: updateError } = await supabaseBrowserClient
+        .from("landing_pages")
+        .update({ production_variant_id: variantId })
+        .eq("id", lp.id);
+      if (updateError) {
+        setError(updateError.message);
+      } else {
+        await load();
+      }
+    } finally {
+      setUpdatingProductionId(null);
+    }
   }
 
   async function handleStartTest() {
@@ -346,7 +389,9 @@ Salve em \`${filePath}\`.`;
               <th className="py-2 pr-4">Variante</th>
               <th className="py-2 pr-4">Slug</th>
               <th className="py-2 pr-4">Carregamentos</th>
-              <th className="py-2">Cliques</th>
+              <th className="py-2 pr-4">Cliques</th>
+              <th className="py-2 pr-4">Atual</th>
+              <th className="py-2">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -357,8 +402,43 @@ Salve em \`${filePath}\`.`;
                 <td className="py-2 pr-4 font-mono text-white/90">
                   {viewCounts[v.id] ?? 0}
                 </td>
-                <td className="py-2 font-mono text-brand-yellow">
+                <td className="py-2 pr-4 font-mono text-brand-yellow">
                   {clickCounts[v.id] ?? 0}
+                </td>
+                <td className="py-2 pr-4 text-xs">
+                  {lp.production_variant_id === v.id ? (
+                    <span className="inline-flex items-center rounded-full border border-brand-green/50 px-2 py-0.5 text-[0.7rem] text-brand-green">
+                      Atual
+                    </span>
+                  ) : (
+                    <span className="text-[0.7rem] text-white/40">—</span>
+                  )}
+                </td>
+                <td className="py-2 text-xs">
+                  <div className="flex flex-wrap gap-2">
+                    <a
+                      href={`/lp/${lp.slug}/${v.variant_slug}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded-full border border-white/20 px-2.5 py-0.5 text-[0.7rem] text-white/80 hover:border-brand-yellow hover:text-brand-yellow"
+                    >
+                      Acessar
+                    </a>
+                    <button
+                      type="button"
+                      disabled={
+                        !!experiment ||
+                        lp.production_variant_id === v.id ||
+                        updatingProductionId === v.id
+                      }
+                      onClick={() => void handleSetProductionVariant(v.id)}
+                      className="rounded-full bg-white/5 px-2.5 py-0.5 text-[0.7rem] text-white/80 hover:bg-white/10 disabled:opacity-40"
+                    >
+                      {updatingProductionId === v.id
+                        ? "Definindo..."
+                        : "Usar como atual"}
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -368,36 +448,54 @@ Salve em \`${filePath}\`.`;
           <p className="text-sm text-white/50 py-2">Nenhuma variante.</p>
         )}
 
-        {!variants.some((v) => v.variant_slug === "b") && (
-          <div className="mt-4">
+        <div className="mt-4 space-y-2">
+          <p className="text-xs text-white/60">
+            Crie novas variantes para testar diferentes versões da sua LP. O slug
+            define a pasta em <code className="bg-black/40 px-1 rounded text-[0.7rem]">landingpages/{lp.slug}/[slug]/index.html</code>.
+          </p>
+          <div className="flex flex-wrap gap-2 items-center">
+            <input
+              type="text"
+              value={newVariantSlug}
+              onChange={(e) => setNewVariantSlug(e.target.value)}
+              placeholder="Slug (ex.: b, c, oferta-nova)"
+              className="rounded-md bg-black/30 border border-white/15 text-xs text-white px-2 py-1 w-40"
+            />
+            <input
+              type="text"
+              value={newVariantLabel}
+              onChange={(e) => setNewVariantLabel(e.target.value)}
+              placeholder="Nome da variante (opcional)"
+              className="rounded-md bg-black/30 border border-white/15 text-xs text-white px-2 py-1 w-56"
+            />
             <button
               type="button"
               disabled={creatingVariant}
-              onClick={() => void handleCreateVariantB()}
+              onClick={() => void handleCreateVariant()}
               className="rounded-full bg-brand-yellow px-4 py-2 text-xs font-semibold text-brand-navy hover:bg-[#ffd94b] disabled:opacity-60 transition-colors"
             >
-              {creatingVariant ? "Criando..." : "+ Criar variante B"}
+              {creatingVariant ? "Criando..." : "+ Criar variante"}
             </button>
           </div>
-        )}
+        </div>
       </div>
 
-      {/* Modal: variante B criada - instruções */}
-      {showVariantBModal && variantBCreated && (
+      {/* Modal: variante criada - instruções */}
+      {showVariantModal && variantCreated && (
         <div className="fixed inset-0 z-20 flex items-center justify-center bg-black/60">
           <div className="w-full max-w-lg rounded-xl border border-white/15 bg-brand-navy p-5 shadow-brand-soft max-h-[90vh] overflow-y-auto">
-            <h3 className="text-lg font-semibold mb-2">Variante B criada</h3>
+            <h3 className="text-lg font-semibold mb-2">Variante criada</h3>
             <p className="text-sm text-white/80 mb-3">
               Crie a pasta e o arquivo no projeto para o teste A/B funcionar:
             </p>
             <p className="text-xs text-white/60 mb-2 font-mono">
-              landingpages/{lp.slug}/b/index.html
+              landingpages/{lp.slug}/{variantCreated.variant_slug}/index.html
             </p>
             <div className="flex gap-2 mb-3">
               <button
                 type="button"
                 onClick={() => {
-                  const html = getBaseHtmlForVariantB(variantBCreated.id);
+                  const html = getBaseHtmlForVariant(variantCreated);
                   void navigator.clipboard.writeText(html);
                 }}
                 className="rounded-md border border-brand-yellow/50 bg-brand-yellow/10 px-3 py-1.5 text-xs font-medium text-brand-yellow"
@@ -407,7 +505,7 @@ Salve em \`${filePath}\`.`;
               <button
                 type="button"
                 onClick={() => {
-                  const prompt = getCursorPromptForVariantB(variantBCreated.id);
+                  const prompt = getCursorPromptForVariant(variantCreated);
                   void navigator.clipboard.writeText(prompt);
                 }}
                 className="rounded-md border border-brand-green/50 bg-brand-green/10 px-3 py-1.5 text-xs font-medium text-brand-green"
@@ -418,8 +516,8 @@ Salve em \`${filePath}\`.`;
             <button
               type="button"
               onClick={() => {
-                setShowVariantBModal(false);
-                setVariantBCreated(null);
+                setShowVariantModal(false);
+                setVariantCreated(null);
               }}
               className="rounded-full border border-white/20 px-3 py-1.5 text-xs text-white/80"
             >
@@ -478,11 +576,15 @@ Salve em \`${filePath}\`.`;
         ) : (
           <div className="space-y-3">
             <p className="text-sm text-white/70">
-              Inicie um teste 50/50 entre a variante default (A) e uma variante B.
+              Inicie um teste 50/50 entre a variante default (A) e uma variante de teste.
             </p>
             {variantBOptions.length === 0 ? (
               <p className="text-xs text-white/50">
-                Crie a variante B acima e o arquivo em landingpages/{lp.slug}/b/ antes de iniciar.
+                Crie ao menos uma variante acima (por exemplo, com slug &quot;b&quot;) e o arquivo correspondente em{" "}
+                <code className="bg-black/30 px-1 rounded text-[0.7rem]">
+                  landingpages/{lp.slug}/[slug-da-variante]/index.html
+                </code>{" "}
+                antes de iniciar.
               </p>
             ) : (
               <div className="flex items-center gap-3 flex-wrap">
