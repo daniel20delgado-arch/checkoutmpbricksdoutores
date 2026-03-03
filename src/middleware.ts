@@ -82,30 +82,18 @@ export async function middleware(request: NextRequest) {
   let targetVariantSlug: string | null = null;
 
   if (experiment && experiment.variant_control_id && experiment.variant_b_id) {
-    const cookieName = `lp_ab_${landingPageId}`;
-    const existing = request.cookies.get(cookieName)?.value;
-
-    let variantId: string | null = null;
-    if (existing === "default" || existing === "b") {
-      variantId =
-        existing === "default"
-          ? experiment.variant_control_id
-          : experiment.variant_b_id;
-      targetVariantSlug = existing;
-    }
-    if (!targetVariantSlug) {
-      const useControl = Math.random() < 0.5;
-      variantId = useControl
-        ? experiment.variant_control_id
-        : experiment.variant_b_id;
-      const { data: variant } = await supabase
-        .from("page_variants")
-        .select("variant_slug")
-        .eq("id", variantId)
-        .maybeSingle();
-      if (variant?.variant_slug) {
-        targetVariantSlug = variant.variant_slug;
-      }
+    // Sorteio 50/50 em cada requisição entre controle (default) e B
+    const useControl = Math.random() < 0.5;
+    const variantId = useControl
+      ? experiment.variant_control_id
+      : experiment.variant_b_id;
+    const { data: variant } = await supabase
+      .from("page_variants")
+      .select("variant_slug")
+      .eq("id", variantId)
+      .maybeSingle();
+    if (variant?.variant_slug) {
+      targetVariantSlug = variant.variant_slug;
     }
   }
 
@@ -139,16 +127,9 @@ export async function middleware(request: NextRequest) {
   const internalUrl = request.nextUrl.clone();
   internalUrl.pathname = `/lp/${landingPage.slug}/${targetVariantSlug}`;
 
-  const res = NextResponse.redirect(internalUrl, 302);
+  // Reescreve internamente para a rota da LP, mantendo a URL pública (ex: /teste-1)
+  const res = NextResponse.rewrite(internalUrl);
   res.headers.set("Cache-Control", "no-store, no-cache, must-revalidate");
-  if (experiment && targetVariantSlug) {
-    const cookieName = `lp_ab_${landingPageId}`;
-    res.cookies.set(cookieName, targetVariantSlug, {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 30,
-      sameSite: "lax"
-    });
-  }
   return res;
 }
 
