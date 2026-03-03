@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LP teste</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #050a30;
+      color: #ffffff;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+    .hero {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: clamp(1.75rem, 5vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .hero p {
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 2rem;
+    }
+    .cta {
+      display: inline-block;
+      background: #f4b609;
+      color: #050a30;
+      font-weight: 600;
+      padding: 0.875rem 1.75rem;
+      border-radius: 8px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: opacity 0.2s;
+    }
+    .cta:hover { opacity: 0.9; }
+  </style>
+  <script>
+    function trackClick(buttonId) {
+      fetch('/api/track-click', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          landing_page_id: "9e57f250-44a5-4e4c-abb8-521b65c7ed6d",
+          page_variant_id: "715ed749-5626-46ba-a9a1-8a9a8145ebe0",
+          experiment_id: null,
+          button_id: buttonId
+        }),
+        keepalive: true
+      });
+    }
+    window.trackClick = trackClick;
+  </script>
+</head>
+<body>
+  <section class="hero">
+    <h1>LP teste</h1>
+    <p>Bem-vindo à nossa oferta. Aproveite agora com um clique.</p>
+    <button type="button" class="cta" data-track="cta-hero" onclick="trackClick('cta-hero')">
+      Quero aproveitar
+    </button>
+  </section>
+</body>
+</html>
