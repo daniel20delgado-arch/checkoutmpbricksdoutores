@@ -42,6 +42,18 @@
       transition: opacity 0.2s;
     }
     .cta:hover { opacity: 0.9; }
+    .badge {
+      display: inline-block;
+      background: #f4b609;
+      color: #050a30;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
   </style>
   <script>
     function trackClick(buttonId) {
@@ -58,10 +70,22 @@
       });
     }
     window.trackClick = trackClick;
+    (function trackPageView() {
+      fetch('/api/track-page-view', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          landing_page_id: "9e57f250-44a5-4e4c-abb8-521b65c7ed6d",
+          page_variant_id: "715ed749-5626-46ba-a9a1-8a9a8145ebe0"
+        }),
+        keepalive: true
+      });
+    })();
   </script>
 </head>
 <body>
   <section class="hero">
+    <span class="badge">Variante B</span>
     <h1>LP teste</h1>
     <p>Bem-vindo à nossa oferta. Aproveite agora com um clique.</p>
     <button type="button" class="cta" data-track="cta-hero" onclick="trackClick('cta-hero')">

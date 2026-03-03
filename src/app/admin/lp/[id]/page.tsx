@@ -38,6 +38,7 @@ export default function AdminLpDetailPage() {
   const [lp, setLp] = useState<LandingPage | null>(null);
   const [variants, setVariants] = useState<PageVariant[]>([]);
   const [clickCounts, setClickCounts] = useState<Record<string, number>>({});
+  const [viewCounts, setViewCounts] = useState<Record<string, number>>({});
   const [experiment, setExperiment] = useState<Experiment | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -106,6 +107,19 @@ export default function AdminLpDetailPage() {
           counts[row.page_variant_id] = (counts[row.page_variant_id] ?? 0) + 1;
         }
         setClickCounts(counts);
+      }
+
+      const { data: viewsData, error: vwError } = await supabaseBrowserClient
+        .from("page_views")
+        .select("page_variant_id")
+        .eq("landing_page_id", id);
+
+      if (!vwError && viewsData) {
+        const counts: Record<string, number> = {};
+        for (const row of viewsData as { page_variant_id: string }[]) {
+          counts[row.page_variant_id] = (counts[row.page_variant_id] ?? 0) + 1;
+        }
+        setViewCounts(counts);
       }
 
       const { data: expData, error: expError } = await supabaseBrowserClient
@@ -323,14 +337,15 @@ Salve em \`${filePath}\`.`;
         </p>
       )}
 
-      {/* Variantes e cliques */}
+      {/* Variantes, carregamentos e cliques */}
       <div className="rounded-xl border border-white/10 bg-black/20 p-4">
-        <h2 className="text-sm font-semibold mb-3">Variantes e cliques</h2>
+        <h2 className="text-sm font-semibold mb-3">Variantes, carregamentos e cliques</h2>
         <table className="w-full text-sm border-collapse">
           <thead>
             <tr className="border-b border-white/10 text-left">
               <th className="py-2 pr-4">Variante</th>
               <th className="py-2 pr-4">Slug</th>
+              <th className="py-2 pr-4">Carregamentos</th>
               <th className="py-2">Cliques</th>
             </tr>
           </thead>
@@ -339,6 +354,9 @@ Salve em \`${filePath}\`.`;
               <tr key={v.id} className="border-b border-white/5">
                 <td className="py-2 pr-4">{v.label}</td>
                 <td className="py-2 pr-4 text-white/70">{v.variant_slug}</td>
+                <td className="py-2 pr-4 font-mono text-white/90">
+                  {viewCounts[v.id] ?? 0}
+                </td>
                 <td className="py-2 font-mono text-brand-yellow">
                   {clickCounts[v.id] ?? 0}
                 </td>
@@ -421,12 +439,16 @@ Salve em \`${filePath}\`.`;
             <div className="flex flex-wrap gap-4 text-sm">
               <span>
                 A (controle):{" "}
+                <strong className="text-white/90">{viewCounts[experiment.variant_control_id] ?? 0} carreg.</strong>
+                {" · "}
                 <strong className="text-brand-yellow">
                   {clickCounts[experiment.variant_control_id] ?? 0} cliques
                 </strong>
               </span>
               <span>
                 B:{" "}
+                <strong className="text-white/90">{viewCounts[experiment.variant_b_id] ?? 0} carreg.</strong>
+                {" · "}
                 <strong className="text-brand-yellow">
                   {clickCounts[experiment.variant_b_id] ?? 0} cliques
                 </strong>
@@ -473,7 +495,7 @@ Salve em \`${filePath}\`.`;
                   <option value="">Selecione</option>
                   {variantBOptions.map((v) => (
                     <option key={v.id} value={v.id}>
-                      {v.label} ({v.variant_slug}) — {clickCounts[v.id] ?? 0} cliques
+                      {v.label} ({v.variant_slug}) — {viewCounts[v.id] ?? 0} carreg. / {clickCounts[v.id] ?? 0} cliques
                     </option>
                   ))}
                 </select>

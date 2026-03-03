@@ -58,6 +58,17 @@
       });
     }
     window.trackClick = trackClick;
+    (function trackPageView() {
+      fetch('/api/track-page-view', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          landing_page_id: "9e57f250-44a5-4e4c-abb8-521b65c7ed6d",
+          page_variant_id: "2e089447-5504-4e04-b484-b164fad54c6c"
+        }),
+        keepalive: true
+      });
+    })();
   </script>
 </head>
 <body>

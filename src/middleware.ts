@@ -47,17 +47,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Opcional: validar host, mas não bloquear caso variável não esteja definida.
-  if (baseDomain) {
-    try {
-      const expectedHost = new URL(baseDomain).hostname;
-      if (hostname !== expectedHost) {
-        return NextResponse.next();
-      }
-    } catch {
-      // Se baseDomain estiver mal configurado, apenas segue.
-    }
-  }
+  // Em outros hosts (ex: localhost) permitir redirect da LP para testar A/B
+  // (não exigir expectedHost para a lógica de /path_slug -> /lp/slug/variant)
 
   if (!supabase) {
     return NextResponse.next();
@@ -91,20 +82,30 @@ export async function middleware(request: NextRequest) {
   let targetVariantSlug: string | null = null;
 
   if (experiment && experiment.variant_control_id && experiment.variant_b_id) {
-    // 50/50 entre controle e B
-    const useControl = Math.random() < 0.5;
-    const variantId = useControl
-      ? experiment.variant_control_id
-      : experiment.variant_b_id;
+    const cookieName = `lp_ab_${landingPageId}`;
+    const existing = request.cookies.get(cookieName)?.value;
 
-    const { data: variant } = await supabase
-      .from("page_variants")
-      .select("variant_slug")
-      .eq("id", variantId)
-      .maybeSingle();
-
-    if (variant?.variant_slug) {
-      targetVariantSlug = variant.variant_slug;
+    let variantId: string | null = null;
+    if (existing === "default" || existing === "b") {
+      variantId =
+        existing === "default"
+          ? experiment.variant_control_id
+          : experiment.variant_b_id;
+      targetVariantSlug = existing;
+    }
+    if (!targetVariantSlug) {
+      const useControl = Math.random() < 0.5;
+      variantId = useControl
+        ? experiment.variant_control_id
+        : experiment.variant_b_id;
+      const { data: variant } = await supabase
+        .from("page_variants")
+        .select("variant_slug")
+        .eq("id", variantId)
+        .maybeSingle();
+      if (variant?.variant_slug) {
+        targetVariantSlug = variant.variant_slug;
+      }
     }
   }
 
@@ -138,7 +139,17 @@ export async function middleware(request: NextRequest) {
   const internalUrl = request.nextUrl.clone();
   internalUrl.pathname = `/lp/${landingPage.slug}/${targetVariantSlug}`;
 
-  return NextResponse.redirect(internalUrl, 302);
+  const res = NextResponse.redirect(internalUrl, 302);
+  res.headers.set("Cache-Control", "no-store, no-cache, must-revalidate");
+  if (experiment && targetVariantSlug) {
+    const cookieName = `lp_ab_${landingPageId}`;
+    res.cookies.set(cookieName, targetVariantSlug, {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30,
+      sameSite: "lax"
+    });
+  }
+  return res;
 }
 
 export const config = {
