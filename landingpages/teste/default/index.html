@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>LP Teste Simples</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+          "Segoe UI", sans-serif;
+        background: #020617;
+        color: #e2e8f0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+      .wrapper {
+        max-width: 640px;
+        width: 100%;
+        padding: 32px 24px;
+        border-radius: 18px;
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        background: radial-gradient(circle at top left, #0f172a, #020617);
+      }
+      h1 {
+        margin: 0 0 8px;
+        font-size: 1.9rem;
+      }
+      p {
+        margin: 0 0 16px;
+        color: #cbd5f5;
+      }
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 18px;
+        border-radius: 999px;
+        border: none;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #020617;
+        background: linear-gradient(120deg, #4ade80, #22c55e);
+        cursor: pointer;
+      }
+    </style>
+    <script>
+      async function trackClick(buttonId) {
+        try {
+          await fetch("/api/track-click", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              landing_page_id: "teste-id",
+              page_variant_id: "teste-default",
+              experiment_id: null,
+              button_id: buttonId
+            }),
+            keepalive: true
+          });
+        } catch (e) {}
+      }
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <h1>LP de teste simples</h1>
+      <p>
+        Esta é uma landing page bem simples só para testar o fluxo: servir HTML
+        estático e registrar cliques em um botão principal.
+      </p>
+      <button class="cta" onclick="trackClick('cta-teste')">
+        Clique de teste
+      </button>
+    </div>
+  </body>
+</html>
+
