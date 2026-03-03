@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LP Dpctpr — Bolsas de até 47% em Dados</title>
+  <meta name="description" content="LP Dpctpr — Bolsas de até 47% para acessar todos os cursos do Doctor e se tornar especialista em dados com Excel, Power BI e IA aplicada ao mundo corporativo.">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #050a30;
+      --accent: #f4b609;
+      --accent-soft: rgba(244, 182, 9, 0.14);
+      --text: #ffffff;
+      --green: #1b9054;
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --card-bg: rgba(5, 10, 48, 0.88);
+      --muted: rgba(255, 255, 255, 0.78);
+      --radius-lg: 18px;
+      --shadow-soft: 0 24px 80px rgba(0, 0, 0, 0.65);
+      --gradient-accent: radial-gradient(circle at 0% 0%, rgba(244, 182, 9, 0.16), transparent 60%),
+                         radial-gradient(circle at 100% 0%, rgba(27, 144, 84, 0.14), transparent 55%),
+                         radial-gradient(circle at 50% 100%, rgba(244, 182, 9, 0.1), transparent 60%);
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 10% 0%, #08104a 0, #050a30 45%, #020414 100%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: -40%;
+      background: var(--gradient-accent);
+      opacity: 0.5;
+      mix-blend-mode: screen;
+      pointer-events: none;
+      filter: blur(40px);
+      transform: translate3d(0, 0, 0);
+      animation: pulse-glow 18s ease-in-out infinite alternate;
+      z-index: -2;
+    }
+
+    body::after {
+      animation-duration: 26s;
+      animation-direction: alternate-reverse;
+      opacity: 0.45;
+    }
+
+    @keyframes pulse-glow {
+      0% {
+        transform: translate3d(-2%, -1%, 0) scale(1);
+        opacity: 0.45;
+      }
+      50% {
+        transform: translate3d(2%, 3%, 0) scale(1.06);
+        opacity: 0.8;
+      }
+      100% {
+        transform: translate3d(-3%, 2%, 0) scale(1.02);
+        opacity: 0.55;
+      }
+    }
+
+    .scanline {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+      background-size: 100% 3px;
+      opacity: 0.12;
+      mix-blend-mode: soft-light;
+      z-index: -1;
+    }
+
+    .page-shell {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 3.5rem;
+    }
+
+    @media (min-width: 1024px) {
+      .page-shell {
+        padding: 3.25rem 1.5rem 4rem;
+      }
+    }
+
+    .hero {
+      position: relative;
+      border-radius: 26px;
+      padding: 2.5rem min(3rem, 5vw);
+      background:
+        linear-gradient(135deg, rgba(244, 182, 9, 0.28), rgba(27, 144, 84, 0.18)) border-box,
+        radial-gradient(circle at 0% 0%, rgba(244, 182, 9, 0.18), transparent 55%),
+        radial-gradient(circle at 100% 0%, rgba(27, 144, 84, 0.28), transparent 55%),
+        radial-gradient(circle at 0% 100%, rgba(5, 10, 48, 0.96), #050a30);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.8);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      background: conic-gradient(
+        from 180deg,
+        rgba(244, 182, 9, 0.2),
+        rgba(27, 144, 84, 0.2),
+        rgba(5, 10, 48, 0.4),
+        rgba(244, 182, 9, 0.2)
+      );
+      opacity: 0;
+      animation: border-orbit 16s linear infinite;
+      mix-blend-mode: screen;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @keyframes border-orbit {
+      0% { opacity: 0.35; transform: rotate(0deg); }
+      50% { opacity: 0.55; }
+      100% { opacity: 0.35; transform: rotate(360deg); }
+    }
+
+    .hero-grid {
+      display: grid;
+      gap: 2rem;
+    }
+
+    @media (min-width: 880px) {
+      .hero-grid {
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.9fr);
+        align-items: center;
+        gap: 2.25rem;
+      }
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(244, 182, 9, 0.55);
+      background: rgba(5, 10, 48, 0.72);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .badge-pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: radial-gradient(circle, var(--accent) 0, #ffffff 35%, rgba(5, 10, 48, 0.6) 100%);
+      box-shadow: 0 0 18px rgba(244, 182, 9, 0.9);
+    }
+
+    .badge-info {
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.74);
+    }
+
+    .hero-kicker {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: rgba(244, 182, 9, 0.88);
+      margin-bottom: 0.9rem;
+      font-weight: 600;
+    }
+
+    .hero-title {
+      font-size: clamp(1.9rem, 3.1vw, 2.45rem);
+      line-height: 1.15;
+      font-weight: 760;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title span.accent {
+      color: var(--accent);
+      text-shadow: 0 0 24px rgba(244, 182, 9, 0.7);
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 36rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-bullets {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 1.6rem;
+    }
+
+    .hero-bullets p + p {
+      margin-top: 0.35rem;
+    }
+
+    .hero-bullets-rows {
+      display: grid;
+      gap: 0.25rem;
+      margin-top: 0.85rem;
+      font-size: 0.9rem;
+    }
+
+    @media (min-width: 640px) {
+      .hero-bullets-rows {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.4rem 1rem;
+      }
+    }
+
+    .hero-bullet-item {
+      display: inline-flex;
+      align-items: flex-start;
+      gap: 0.35rem;
+    }
+
+    .bullet-dash {
+      width: 10px;
+      height: 1px;
+      background: rgba(244, 182, 9, 0.8);
+      margin-top: 0.65rem;
+      flex-shrink: 0;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.9rem 1.1rem;
+    }
+
+    .cta-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      padding: 0.95rem 1.8rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 650;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: radial-gradient(circle at 0% 0%, #ffffff 0, #f4b609 32%, #f2a809 55%, #f19d09 72%);
+      color: #050a30;
+      box-shadow:
+        0 0 22px rgba(244, 182, 9, 0.9),
+        0 14px 40px rgba(0, 0, 0, 0.8);
+      transition:
+        transform 0.18s ease-out,
+        box-shadow 0.18s ease-out,
+        filter 0.18s ease-out;
+      white-space: nowrap;
+    }
+
+    .cta-primary span.icon {
+      font-size: 1.2rem;
+      transform: translateY(-1px);
+    }
+
+    .cta-primary:hover {
+      transform: translateY(-1px) scale(1.02);
+      box-shadow:
+        0 0 32px rgba(244, 182, 9, 0.95),
+        0 18px 50px rgba(0, 0, 0, 0.9);
+      filter: brightness(1.05);
+    }
+
+    .cta-primary:active {
+      transform: translateY(0) scale(0.99);
+      box-shadow:
+        0 0 18px rgba(244, 182, 9, 0.8),
+        0 10px 26px rgba(0, 0, 0, 0.75);
+      filter: brightness(0.98);
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem 1rem;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(5, 10, 48, 0.78);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .meta-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--green);
+      box-shadow: 0 0 12px rgba(27, 144, 84, 0.9);
+    }
+
+    .hero-right {
+      position: relative;
+      min-height: 220px;
+    }
+
+    .orbital-card {
+      position: relative;
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 1.4rem;
+      background: linear-gradient(145deg, rgba(5, 10, 48, 0.98), rgba(2, 6, 30, 0.98));
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .orbital-card::before {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background: conic-gradient(
+        from 220deg,
+        rgba(244, 182, 9, 0.35),
+        rgba(27, 144, 84, 0.1),
+        rgba(5, 10, 48, 0.2),
+        rgba(244, 182, 9, 0.35)
+      );
+      opacity: 0.22;
+      mix-blend-mode: screen;
+      animation: orbit-slow 30s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes orbit-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .orbital-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.15rem;
+    }
+
+    .orbital-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .orbital-pill {
+      padding: 0.2rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(27, 144, 84, 0.16);
+      border: 1px solid rgba(27, 144, 84, 0.7);
+      font-size: 0.7rem;
+      color: rgba(185, 245, 208, 0.9);
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.8rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.8rem;
+    }
+
+    .stat-card {
+      padding: 0.6rem 0.75rem;
+      border-radius: 10px;
+      background: rgba(11, 18, 70, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-value {
+      font-size: 0.9rem;
+      font-weight: 650;
+    }
+
+    .stat-value.accent {
+      color: var(--accent);
+    }
+
+    .progress-track {
+      margin-top: 0.3rem;
+      width: 100%;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), #ffffff);
+      width: 76%;
+      box-shadow: 0 0 14px rgba(244, 182, 9, 0.9);
+    }
+
+    .orbital-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.78);
+      border-top: 1px dashed rgba(255, 255, 255, 0.2);
+      padding-top: 0.75rem;
+      margin-top: 0.6rem;
+    }
+
+    .orbital-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 999px;
+      background: rgba(5, 10, 48, 0.9);
+      border: 1px solid rgba(244, 182, 9, 0.6);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+    }
+
+    .orbital-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(244, 182, 9, 0.9);
+    }
+
+    .orbital-note {
+      text-align: right;
+    }
+
+    .orbital-note strong {
+      color: rgba(255, 255, 255, 0.96);
+    }
+
+    main {
+      margin-top: 2.75rem;
+    }
+
+    .sections-grid {
+      display: grid;
+      gap: 1.8rem;
+    }
+
+    @media (min-width: 900px) {
+      .sections-grid {
+        gap: 2.2rem;
+      }
+    }
+
+    section.block {
+      border-radius: var(--radius-lg);
+      padding: 1.65rem 1.4rem 1.8rem;
+      background: linear-gradient(135deg, rgba(5, 10, 48, 0.9), rgba(2, 6, 30, 0.98));
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    @media (min-width: 720px) {
+      section.block {
+        padding: 1.8rem 1.8rem 2rem;
+      }
+    }
+
+    .block-header {
+      margin-bottom: 1.1rem;
+    }
+
+    .block-kicker {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: rgba(244, 182, 9, 0.85);
+      margin-bottom: 0.4rem;
+    }
+
+    .block-title {
+      font-size: 1.1rem;
+      font-weight: 650;
+    }
+
+    .block-title span.icon {
+      margin-right: 0.45rem;
+    }
+
+    .block-body {
+      font-size: 0.94rem;
+      color: var(--muted);
+    }
+
+    .block-body p + p {
+      margin-top: 0.7rem;
+    }
+
+    .list {
+      list-style: none;
+      margin-top: 0.75rem;
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.55rem;
+    }
+
+    .list li::before {
+      content: "●";
+      margin-top: 0.1rem;
+      font-size: 0.7rem;
+      color: var(--accent);
+    }
+
+    .list.neg li::before {
+      color: #ff5a5a;
+    }
+
+    .section-split {
+      display: grid;
+      gap: 1.4rem;
+    }
+
+    @media (min-width: 880px) {
+      .section-split {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.8rem;
+      }
+    }
+
+    .inline-heading {
+      font-weight: 600;
+      margin-bottom: 0.65rem;
+      color: #ffffff;
+    }
+
+    .highlight-box {
+      margin-top: 0.8rem;
+      border-radius: 14px;
+      border: 1px dashed rgba(244, 182, 9, 0.65);
+      background: rgba(5, 10, 48, 0.92);
+      padding: 0.9rem 0.9rem 1rem;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .highlight-box strong {
+      color: var(--accent);
+    }
+
+    .cta-block {
+      margin-top: 1.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.8rem 1.2rem;
+    }
+
+    .cta-note {
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .cta-note strong {
+      color: #ffffff;
+    }
+
+    .badge-list-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.75rem;
+      margin-top: 0.8rem;
+      font-size: 0.78rem;
+    }
+
+    .badge-list-item {
+      padding: 0.17rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(5, 10, 48, 0.9);
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+    .faq-item + .faq-item {
+      margin-top: 0.8rem;
+    }
+
+    .faq-question {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      color: #ffffff;
+    }
+
+    .faq-answer {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .final-call {
+      text-align: center;
+      margin-top: 2.1rem;
+    }
+
+    .final-call p {
+      font-size: 0.94rem;
+      color: var(--muted);
+      margin-bottom: 1.15rem;
+    }
+
+    .final-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      align-items: center;
+      font-size: 0.9rem;
+      margin-bottom: 1.25rem;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .final-list li::before {
+      content: "– ";
+      color: rgba(244, 182, 9, 0.9);
+    }
+
+    footer {
+      margin-top: 2.5rem;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.55);
+      text-align: center;
+    }
+
+    @media (max-width: 599px) {
+      .hero {
+        padding: 2rem 1.3rem 2.3rem;
+      }
+      .hero-title {
+        font-size: 1.65rem;
+      }
+      .cta-primary {
+        width: 100%;
+      }
+      .hero-meta {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .orbital-card {
+        margin-top: 0.4rem;
+      }
+      .page-shell {
+        padding-inline: 1.25rem;
+      }
+    }
+  </style>
+  <script>
+    (function () {
+      function trackClick(buttonId) {
+        if (!window.fetch) {
+          return;
+        }
+
+        try {
+          fetch('/api/track-click', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              landing_page_id: "5023b014-44dc-40f3-ab5f-dfe801a66158",
+              page_variant_id: "b0a4f4d4-9294-4fdd-b92e-46aec7e861cc",
+              experiment_id: null,
+              button_id: buttonId
+            }),
+            keepalive: true
+          });
+        } catch (e) {
+          // falha silenciosa de tracking
+        }
+      }
+
+      window.trackClick = trackClick;
+    })();
+  </script>
+</head>
+<body>
+  <div class="scanline" aria-hidden="true"></div>
+  <div class="page-shell">
+    <header class="hero" aria-label="LP Dpctpr - Bolsas em formação de dados">
+      <div class="hero-grid">
+        <div>
+          <div class="badge-row">
+            <div class="badge-pill">
+              <span class="badge-pill-dot"></span>
+              LP Dpctpr • assinatura Doctor
+            </div>
+            <div class="badge-info">
+              Bolsas de até <strong>47% OFF</strong> para especialistas em dados
+            </div>
+          </div>
+
+          <p class="hero-kicker">Bolsas limitadas • Turma atual</p>
+          <h1 class="hero-title">
+            🏆 Bolsas de até <span class="accent">47%</span> para acessar todos os cursos do Doctor
+          </h1>
+          <p class="hero-subtitle">
+            Faça parte do grupo de analistas administrativos que se tornaram especialistas em dados
+            e passaram a ser disputados dentro das empresas — dominando <strong>Excel</strong>, <strong>Power BI</strong> e
+            <strong>IA aplicada ao mundo corporativo</strong> em uma formação única.
+          </p>
+
+          <div class="hero-bullets">
+            <p>
+              Sem precisar comprar cursos separados. Sem depender de alguém para resolver suas planilhas.
+              Sem continuar se sentindo para trás.
+            </p>
+            <div class="hero-bullets-rows">
+              <div class="hero-bullet-item">
+                <div class="bullet-dash"></div>
+                <span>Acesso completo por 1 ano</span>
+              </div>
+              <div class="hero-bullet-item">
+                <div class="bullet-dash"></div>
+                <span>Todos os cursos liberados</span>
+              </div>
+              <div class="hero-bullet-item">
+                <div class="bullet-dash"></div>
+                <span>Do zero ao avançado</span>
+              </div>
+              <div class="hero-bullet-item">
+                <div class="bullet-dash"></div>
+                <span>Exclusivo para profissionais acima de 30 anos</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-cta-row">
+            <button
+              type="button"
+              class="cta-primary"
+              data-track="cta-hero"
+              onclick="trackClick('cta-hero')"
+            >
+              <span class="icon">⚡</span>
+              <span>Garantir minha bolsa agora</span>
+            </button>
+            <div class="hero-meta">
+              <div class="meta-pill">
+                <span class="meta-dot"></span>
+                Análise de perfil em até 24h
+              </div>
+              <div class="meta-pill">
+                ✔︎ Vagas extremamente limitadas
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-right" aria-hidden="true">
+          <div class="orbital-card">
+            <div class="orbital-header">
+              <div>
+                <div class="orbital-label">Painel de evolução Doctor</div>
+                <div style="font-size:0.8rem;color:rgba(255,255,255,0.78);margin-top:0.15rem;">
+                  Excel • Power BI • IA aplicada
+                </div>
+              </div>
+              <div class="orbital-pill">LP Dpctpr • Dados</div>
+            </div>
+
+            <div class="stats-row">
+              <div class="stat-card">
+                <div class="stat-label">Domínio em dados</div>
+                <div class="stat-value accent">+47%</div>
+                <div class="progress-track">
+                  <div class="progress-bar"></div>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">Dashboards criados</div>
+                <div class="stat-value">+60</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">Relatórios automatizados</div>
+                <div class="stat-value">+120</div>
+              </div>
+            </div>
+
+            <div class="orbital-footer">
+              <div class="orbital-badge">
+                <span class="orbital-badge-dot"></span>
+                Analistas disputados no mercado
+              </div>
+              <div class="orbital-note">
+                <strong>LP Dpctpr</strong><br>
+                De executor a <span style="color:var(--accent);">estrategista de dados</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="sections-grid">
+        <section class="block" aria-labelledby="para-quem">
+          <div class="block-header">
+            <div class="block-kicker">Elegibilidade</div>
+            <h2 id="para-quem" class="block-title">
+              <span class="icon">📌</span> Para quem é essa bolsa
+            </h2>
+          </div>
+          <div class="block-body">
+            <p>Essa bolsa da LP Dpctpr é exclusiva para profissionais que querem destravar de vez a carreira com dados:</p>
+            <ul class="list">
+              <li>Profissionais administrativos que querem deixar de ser executores e se tornar estrategistas de dados.</li>
+              <li>Adultos que já tentaram aprender antes e desistiram.</li>
+              <li>Iniciantes com medo do Excel.</li>
+              <li>Intermediários que não conseguem evoluir.</li>
+              <li>Avançados que estão desatualizados.</li>
+              <li>Analistas que querem parar de passar vergonha em reuniões.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="block" aria-labelledby="nao-para">
+          <div class="block-header">
+            <div class="block-kicker">Filtro de perfil</div>
+            <h2 id="nao-para" class="block-title">
+              <span class="icon">🚫</span> Não é para
+            </h2>
+          </div>
+          <div class="block-body">
+            <ul class="list neg">
+              <li>Quem quer virar programador.</li>
+              <li>Quem já é ultra-especialista em dados.</li>
+              <li>Quem não quer estudar e aplicar o que aprende.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="block" aria-labelledby="de-refem-a-mentor">
+          <div class="block-header">
+            <div class="block-kicker">Transformação real</div>
+            <h2 id="de-refem-a-mentor" class="block-title">
+              <span class="icon">🎯</span> De refém a mentor
+            </h2>
+          </div>
+          <div class="block-body section-split">
+            <div>
+              <p class="inline-heading">Hoje você pode estar:</p>
+              <ul class="list">
+                <li>Pedindo ajuda no Excel.</li>
+                <li>Fazendo trabalho manual repetitivo.</li>
+                <li>Copiando e colando dados o dia inteiro.</li>
+                <li>Perdendo alguém que “sabia fazer” e ficando perdido.</li>
+                <li>Com um trabalho urgente para entregar.</li>
+                <li>Se sentindo improdutivo e inseguro.</li>
+                <li>Desviando de responsabilidades porque “não domina os dados”.</li>
+              </ul>
+            </div>
+            <div>
+              <p class="inline-heading">Mas existe outro cenário.</p>
+              <p>Profissionais que dominaram dados dentro das empresas:</p>
+              <ul class="list">
+                <li>Passaram a resolver problemas sozinhos.</li>
+                <li>Criar dashboards que contam histórias.</li>
+                <li>Automatizar relatórios que antes levavam horas.</li>
+                <li>Ser consultados por gestores e times.</li>
+                <li>Ser reconhecidos e disputados internamente.</li>
+                <li>Se tornar referência ao invés de “pedir ajuda”.</li>
+              </ul>
+              <div class="highlight-box">
+                Você deixa de ser <strong>refém</strong> dos dados e passa a ser
+                <strong>mentor</strong> de quem ainda não domina o jogo.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="block" aria-labelledby="problema-inteligencia">
+          <div class="block-header">
+            <div class="block-kicker">Mentalidade</div>
+            <h2 id="problema-inteligencia" class="block-title">
+              <span class="icon">🧠</span> O problema não é falta de inteligência
+            </h2>
+          </div>
+          <div class="block-body">
+            <p>
+              Você já tentou aprender sozinho: um vídeo aqui, um curso solto ali, uma fórmula decorada.
+              Mas sem sistema, sem trilha, sem método.
+            </p>
+            <p>
+              O mercado não pede só Excel básico. O mercado pede:
+              <strong>Excel + Power BI + IA + visão estratégica</strong>.
+            </p>
+            <p>
+              Quem domina só uma ferramenta continua comum. Quem domina o ecossistema se torna
+              <strong>especialista disputado</strong>.
+            </p>
+          </div>
+        </section>
+
+        <section class="block" aria-labelledby="caixa-preta">
+          <div class="block-header">
+            <div class="block-kicker">O que está por trás</div>
+            <h2 id="caixa-preta" class="block-title">
+              <span class="icon">🔐</span> A caixa preta do Doctor
+            </h2>
+          </div>
+          <div class="block-body">
+            <p>
+              Ao entrar na LP Dpctpr, você não compra um curso. Você acessa <strong>todos</strong>.
+              Dentro da assinatura você aprende:
+            </p>
+            <ul class="list">
+              <li>PROCV e PROCX na prática.</li>
+              <li>SOMASES e fórmulas avançadas que destravam relatórios.</li>
+              <li>Tabelas Dinâmicas e gráficos profissionais.</li>
+              <li>Power Query, Power Pivot e Modelagem de Dados.</li>
+              <li>Dashboards estratégicos e Power BI completo.</li>
+              <li>IA aplicada à produtividade corporativa.</li>
+              <li>Automação de relatórios e tratativa de dados.</li>
+            </ul>
+            <div class="highlight-box">
+              Tudo organizado em <strong>trilha progressiva</strong> — sem precisar comprar cursos separados.
+            </div>
+          </div>
+        </section>
+
+        <section class="block" aria-labelledby="porque-aprender">
+          <div class="block-header">
+            <div class="block-kicker">Autoridade</div>
+            <h2 id="porque-aprender" class="block-title">
+              <span class="icon">🏅</span> Por que aprender com a gente
+            </h2>
+          </div>
+          <div class="block-body">
+            <ul class="list">
+              <li>Formação construída por Microsoft Specialists.</li>
+              <li>Parceiros oficiais Microsoft.</li>
+              <li>Mais de 40 mil alunos já impactados.</li>
+              <li>Mais de 12 anos de experiência em dados.</li>
+              <li>Professores Especialistas e MVPs da Microsoft.</li>
+              <li>Case de sucesso no Pequenas Empresas &amp; Grandes Negócios.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="block" aria-labelledby="o-que-recebe">
+          <div class="block-header">
+            <div class="block-kicker">Ecossistema completo</div>
+            <h2 id="o-que-recebe" class="block-title">
+              <span class="icon">📦</span> O que você vai receber ao garantir sua bolsa
+            </h2>
+          </div>
+          <div class="block-body">
+            <p>
+              Ao entrar no DOCTOR, você não está comprando um curso isolado. Você está acessando
+              um <strong>ecossistema completo</strong> de formação em Excel, Power BI e IA aplicada ao mundo corporativo.
+            </p>
+          </div>
+        </section>
+
+        <section class="block" aria-labelledby="acesso-aulas">
+          <div class="block-header">
+            <div class="block-kicker">Dentro da plataforma</div>
+            <h2 id="acesso-aulas" class="block-title">
+              <span class="icon">🎥</span> Acesso completo às aulas
+            </h2>
+          </div>
+          <div class="block-body">
+            <ul class="list">
+              <li>Todas as aulas são <strong>gravadas</strong> — assista quantas vezes quiser.</li>
+              <li>Aulas <strong>100% online</strong>, disponíveis <strong>24 horas por dia</strong>.</li>
+              <li>Estude no seu ritmo, revisando sempre que precisar.</li>
+              <li>Assim que entrar, <strong>todos os cursos já estarão liberados</strong> — do iniciante ao especialista.</li>
+            </ul>
+            <div class="highlight-box">
+              Nada de esperar liberar módulo. Nada de comprar curso separado. Nada de depender de novas turmas.
+              Você entra e já tem acesso a <strong>tudo</strong>.
+            </div>
+          </div>
+        </section>
+
+        <section class="block" aria-labelledby="formacao-completa">
+          <div class="block-header">
+            <div class="block-kicker">Trilha estruturada</div>
+            <h2 id="formacao-completa" class="block-title">
+              <span class="icon">🧠</span> Formação completa e progressiva
+            </h2>
+          </div>
+          <div class="block-body">
+            <p>Dentro da plataforma você terá acesso a conteúdos que vão do básico ao nível especialista:</p>
+            <ul class="list">
+              <li>Excel do zero ao avançado.</li>
+              <li>PROCV, PROCX, SOMASES e fórmulas estratégicas.</li>
+              <li>Tabelas Dinâmicas e gráficos profissionais.</li>
+              <li>Power Query, Power Pivot e Modelagem de Dados.</li>
+              <li>Dashboards estratégicos.</li>
+              <li>Power BI completo.</li>
+              <li>IA aplicada à produtividade corporativa.</li>
+            </ul>
+            <p>
+              Tudo estruturado para <strong>adultos que querem aplicar no mundo real</strong>, sem enrolação.
+            </p>
+          </div>
+        </section>
+
+        <section class="block" aria-labelledby="mao-na-massa">
+          <div class="block-header">
+            <div class="block-kicker">Prática real</div>
+            <h2 id="mao-na-massa" class="block-title">
+              <span class="icon">🏢</span> 100% mão na massa
+            </h2>
+          </div>
+          <div class="block-body">
+            <ul class="list">
+              <li>Aulas voltadas para adultos que já estão no mercado.</li>
+              <li>Linguagem direta, sem “tecniquês” desnecessário.</li>
+              <li>Aplicação prática com exemplos reais do mundo corporativo.</li>
+            </ul>
+            <p>
+              Você aprende fazendo, resolvendo problemas reais e aplicando no dia seguinte no trabalho.
+            </p>
+          </div>
+        </section>
+
+        <section class="block" aria-labelledby="certificados">
+          <div class="block-header">
+            <div class="block-kicker">Reconhecimento</div>
+            <h2 id="certificados" class="block-title">
+              <span class="icon">🏆</span> Certificados em cada etapa
+            </h2>
+          </div>
+          <div class="block-body">
+            <p>A cada etapa concluída, você pode gerar seu certificado.</p>
+            <ul class="list">
+              <li>São <strong>mais de 50 certificados</strong> disponíveis dentro da plataforma.</li>
+              <li>Você evolui e comprova, estuda e documenta, aprende e valida.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="block" aria-labelledby="certificacoes-exclusivas">
+          <div class="block-header">
+            <div class="block-kicker">Próximo nível</div>
+            <h2 id="certificacoes-exclusivas" class="block-title">
+              <span class="icon">🎓</span> Certificações exclusivas Doutores do Excel
+            </h2>
+          </div>
+          <div class="block-body">
+            <p>
+              Além dos certificados por curso, você também poderá realizar as
+              <strong>provas finais da Doutores do Excel</strong>.
+            </p>
+            <p>Ao concluir as formações e ser aprovado, você poderá conquistar certificações como:</p>
+            <ul class="list">
+              <li>Avançado em Excel.</li>
+              <li>Especialista em Excel.</li>
+              <li>Especialista em Dashboards.</li>
+              <li>Especialista em Power BI.</li>
+              <li>Especialista em Tratativa de Dados.</li>
+            </ul>
+            <p>Novas certificações são incluídas conforme a plataforma evolui.</p>
+          </div>
+        </section>
+
+        <section class="block" aria-labelledby="bolsas-disponiveis">
+          <div class="block-header">
+            <div class="block-kicker">Oportunidade</div>
+            <h2 id="bolsas-disponiveis" class="block-title">
+              <span class="icon">🎁</span> Bolsas disponíveis
+            </h2>
+          </div>
+          <div class="block-body">
+            <p>Você poderá ser selecionado para:</p>
+            <ul class="list">
+              <li>Bolsa de 1 mês de acesso.</li>
+              <li>Bolsa de 1 ano de acesso.</li>
+              <li>Bolsa de 2 anos de acesso.</li>
+            </ul>
+            <p>
+              As bolsas são limitadas e passam por análise de perfil. Ao preencher sua aplicação,
+              nossa equipe avalia qual modalidade de bolsa você poderá receber.
+            </p>
+          </div>
+        </section>
+
+        <section class="block" aria-labelledby="resumo-incluso">
+          <div class="block-header">
+            <div class="block-kicker">Visão geral</div>
+            <h2 id="resumo-incluso" class="block-title">
+              <span class="icon">🔥</span> Resumo do que está incluso
+            </h2>
+          </div>
+          <div class="block-body">
+            <ul class="list">
+              <li>Acesso imediato a todos os cursos.</li>
+              <li>Plataforma online 24h.</li>
+              <li>Aulas gravadas e ilimitadas.</li>
+              <li>Formação do zero ao especialista.</li>
+              <li>Mais de 50 certificados.</li>
+              <li>Certificações exclusivas Doutores do Excel.</li>
+              <li>Conteúdo prático para o mundo corporativo.</li>
+              <li>Possibilidade de bolsas de até 2 anos.</li>
+            </ul>
+            <div class="highlight-box">
+              Agora a pergunta é: você vai continuar estudando de forma solta ou vai entrar em uma
+              <strong>formação estruturada</strong> e começar a evoluir de verdade?
+              Você não está entrando em um curso aleatório. Está entrando em uma
+              <strong>formação validada</strong>.
+            </div>
+          </div>
+        </section>
+
+        <section class="block" aria-labelledby="sobre-bolsa">
+          <div class="block-header">
+            <div class="block-kicker">Investimento</div>
+            <h2 id="sobre-bolsa" class="block-title">
+              <span class="icon">💰</span> Sobre a bolsa
+            </h2>
+          </div>
+          <div class="block-body">
+            <p>
+              Valor anual completo: <strong>R$ 997</strong>.<br>
+              Para esta turma, bolsas de até <strong>47%</strong>.
+            </p>
+            <p>
+              Você pode garantir acesso por:
+              <strong>12x de R$ 47</strong>.
+            </p>
+            <p>
+              A bolsa é válida por <strong>1 ano de acesso completo</strong>.
+              Apenas <strong>17 bolsas disponíveis</strong> nesta turma.
+            </p>
+            <p>
+              Após o preenchimento do formulário, nossa equipe analisa o perfil e entra em contato pelo WhatsApp.
+            </p>
+          </div>
+        </section>
+
+        <section class="block" aria-labelledby="como-garantir">
+          <div class="block-header">
+            <div class="block-kicker">Passo a passo</div>
+            <h2 id="como-garantir" class="block-title">
+              <span class="icon">📋</span> Como garantir sua bolsa
+            </h2>
+          </div>
+          <div class="block-body">
+            <ol class="list" style="counter-reset: step;list-style:none;">
+              <li style="display:flex;gap:0.6rem;align-items:flex-start;">
+                <span style="counter-increment:step;min-width:1.4rem;height:1.4rem;border-radius:999px;border:1px solid rgba(244,182,9,0.8);display:inline-flex;align-items:center;justify-content:center;font-size:0.78rem;color:var(--accent);margin-top:0.1rem;background:rgba(5,10,48,0.95);box-shadow:0 0 10px rgba(244,182,9,0.4);">
+                  1
+                </span>
+                <span>Clique no botão desta página.</span>
+              </li>
+              <li style="display:flex;gap:0.6rem;align-items:flex-start;">
+                <span style="counter-increment:step;min-width:1.4rem;height:1.4rem;border-radius:999px;border:1px solid rgba(244,182,9,0.8);display:inline-flex;align-items:center;justify-content:center;font-size:0.78rem;color:var(--accent);margin-top:0.1rem;background:rgba(5,10,48,0.95);box-shadow:0 0 10px rgba(244,182,9,0.4);">
+                  2
+                </span>
+                <span>Preencha o formulário com seus dados.</span>
+              </li>
+              <li style="display:flex;gap:0.6rem;align-items:flex-start;">
+                <span style="counter-increment:step;min-width:1.4rem;height:1.4rem;border-radius:999px;border:1px solid rgba(244,182,9,0.8);display:inline-flex;align-items:center;justify-content:center;font-size:0.78rem;color:var(--accent);margin-top:0.1rem;background:rgba(5,10,48,0.95);box-shadow:0 0 10px rgba(244,182,9,0.4);">
+                  3
+                </span>
+                <span>Explique por que você quer evoluir em dados.</span>
+              </li>
+              <li style="display:flex;gap:0.6rem;align-items:flex-start;">
+                <span style="counter-increment:step;min-width:1.4rem;height:1.4rem;border-radius:999px;border:1px solid rgba(244,182,9,0.8);display:inline-flex;align-items:center;justify-content:center;font-size:0.78rem;color:var(--accent);margin-top:0.1rem;background:rgba(5,10,48,0.95);box-shadow:0 0 10px rgba(244,182,9,0.4);">
+                  4
+                </span>
+                <span>Aguarde o contato da equipe pelo WhatsApp.</span>
+              </li>
+            </ol>
+            <div class="cta-block">
+              <button
+                type="button"
+                class="cta-primary"
+                data-track="cta-como-garantir"
+                onclick="trackClick('cta-como-garantir')"
+              >
+                <span class="icon">📲</span>
+                <span>Sim, quero minha bolsa</span>
+              </button>
+              <p class="cta-note">
+                A análise é feita <strong>hoje</strong>. As bolsas são limitadas.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="block" aria-labelledby="faq">
+          <div class="block-header">
+            <div class="block-kicker">Dúvidas frequentes</div>
+            <h2 id="faq" class="block-title">
+              <span class="icon">❓</span> F.A.Q
+            </h2>
+          </div>
+          <div class="block-body">
+            <div class="faq-item">
+              <div class="faq-question">Preciso saber Excel para entrar?</div>
+              <div class="faq-answer">Não. Temos trilha completa para iniciantes.</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">Já sou intermediário. Vale a pena?</div>
+              <div class="faq-answer">Sim. Você terá acesso até o nível especialista e pode acelerar o que já domina.</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">Preciso comprar outros cursos?</div>
+              <div class="faq-answer">Não. A assinatura libera todos os cursos e trilhas do ecossistema.</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">As aulas são gravadas ou ao vivo?</div>
+              <div class="faq-answer">Você tem acesso imediato às aulas gravadas e às atualizações durante 1 ano.</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">É só Excel?</div>
+              <div class="faq-answer">Não. Excel + Power BI + IA aplicada ao mundo corporativo.</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="block" aria-labelledby="chamada-final">
+          <div class="block-header">
+            <div class="block-kicker">Decisão</div>
+            <h2 id="chamada-final" class="block-title">
+              <span class="icon">🔥</span> Chamada final
+            </h2>
+          </div>
+          <div class="block-body final-call">
+            <p>
+              Você pode continuar pedindo ajuda, fazendo planilha manual e se sentindo inseguro…
+              ou pode aproveitar uma das <strong>17 bolsas</strong> e entrar para o grupo que decidiu
+              dominar dados de verdade.
+            </p>
+            <ul class="final-list">
+              <li>Pedindo ajuda o tempo todo.</li>
+              <li>Fazendo planilha manual.</li>
+              <li>Se sentindo inseguro em reuniões.</li>
+            </ul>
+            <div class="badge-list-row">
+              <div class="badge-list-item">Excel avançado</div>
+              <div class="badge-list-item">Power BI estratégico</div>
+              <div class="badge-list-item">IA aplicada</div>
+              <div class="badge-list-item">Certificações em dados</div>
+            </div>
+            <div style="margin-top:1.4rem;">
+              <button
+                type="button"
+                class="cta-primary"
+                data-track="cta-final"
+                onclick="trackClick('cta-final')"
+              >
+                <span class="icon">🚀</span>
+                <span>Garantir minha bolsa agora</span>
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      LP Dpctpr — Formação em Excel, Power BI e IA aplicada ao mundo corporativo. Bolsas limitadas,
+      análise de perfil por tempo restrito.
+    </footer>
+  </div>
+</body>
+</html>
